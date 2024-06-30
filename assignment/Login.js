@@ -36,20 +36,39 @@ app.get('/users', async (req, res) => {
   }
 });
 
+
 app.post('/users', async (req, res) => {
-  try {
-    const hashedPassword = await bcrypt.hash(req.body.password, 10);
-    const pool = await poolPromise;
-    await pool
-      .request()
-      .input('name', sql.VarChar, req.body.name)
-      .input('password', sql.VarChar, hashedPassword)
-      .query('INSERT INTO Users (name, password) VALUES (@name, @password)');
-    res.status(201).send();
-  } catch (err) {
-    res.status(500).send(err.message);
-  }
-});
+    try {
+      const hashedPassword = await bcrypt.hash(req.body.password, 10);
+      const pool = await sql.connect(config);
+  
+
+      const transaction = new sql.Transaction(pool);
+      await transaction.begin();
+  
+      try {
+
+        await pool.request()
+          .input('name', sql.VarChar, req.body.name)
+          .input('password', sql.VarChar, hashedPassword)
+          .query('INSERT INTO Users (name, password) VALUES (@name, @password)');
+  
+
+        await transaction.commit();
+  
+        res.status(201).send('User created');
+      } catch (error) {
+
+        await transaction.rollback();
+        throw error;
+      }
+    } catch (error) {
+      console.error('Error creating user:', error); 
+      res.status(500).send('Error creating user'); 
+    }
+  });
+  
+
 
 app.post('/users/login', async (req, res) => {
   try {
@@ -73,23 +92,6 @@ app.post('/users/login', async (req, res) => {
     res.status(500).send(err.message);
   }
 });
-
-
-app.post('/users/create', async (req, res) => {
-  try {
-    const hashedPassword = await bcrypt.hash(req.body.password, 10);
-    const pool = await poolPromise;
-    await pool
-      .request()
-      .input('name', sql.VarChar, req.body.name)
-      .input('password', sql.VarChar, hashedPassword)
-      .query('INSERT INTO Users (name, password) VALUES (@name, @password)');
-    res.status(201).send('User created');
-  } catch (err) {
-    res.status(500).send(err.message);
-  }
-});
-
 
 app.post('/users/change-password', async (req, res) => {
   try {
