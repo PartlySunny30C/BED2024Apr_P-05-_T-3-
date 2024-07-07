@@ -1,0 +1,69 @@
+1. Set Up Postman Environment
+Install Postman: If you haven't already, download and install Postman.
+
+Create a New Request: Open Postman and create a new request by clicking on the "New" button and then "Request".
+
+Define Environment: Create a new environment or use an existing one. Click on the gear icon at the top right corner in Postman, then "Add" to create a new environment. Enter a name for your environment and add variables like base_url (e.g., http://localhost:3000 if your server is running locally).
+
+2. Test API Endpoints
+User Registration Endpoint (POST /users/register)
+Select HTTP Method: Choose POST from the dropdown menu in Postman.
+
+Set Endpoint URL: Enter the full URL in Postman, including your base URL and endpoint path ({{base_url}}/users/register).
+
+Set Request Body: Select Body tab, choose raw and set JSON from the dropdown menu, then enter the following into the text area:
+
+json
+{
+  "name": "your_username",
+  "password": "your_password"
+}
+Send Request: Click on the "Send" button to send the request to your server.
+
+Check Response: Verify the response received in Postman. You should get a 201 Created status if the user was successfully registered.
+
+Login Endpoint (POST /users/login)
+Select HTTP Method: Choose POST from the dropdown menu in Postman.
+
+Set Endpoint URL: Enter the full URL in Postman, including your base URL and endpoint path ({{base_url}}/users/login).
+
+Set Request Body: Select Body tab, choose raw and set JSON from the dropdown menu, then enter the following into the text area:
+
+json
+
+{
+  "name": "your_username",
+  "password": "your_password"
+}
+Send Request: Click on the "Send" button to send the request to your server.
+
+Check Response: Verify the response received in Postman. You should get a JSON response containing a JWT token if the login was successful.
+
+Change Password Endpoint (POST /users/change-password)
+Select HTTP Method: Choose POST from the dropdown menu in Postman.
+
+Set Endpoint URL: Enter the full URL in Postman, including your base URL and endpoint path ({{base_url}}/users/change-password).
+
+Set Request Body: Select Body tab, choose raw and set JSON from the dropdown menu, then enter the following into the text area:
+
+json
+
+{
+  "name": "your_username",
+  "password": "your_current_password",
+  "newPassword": "your_new_password"
+}
+Send Request: Click on the "Send" button to send the request to your server.
+
+Check Response: Verify the response received in Postman. You should get a response indicating that the password was successfully updated.
+
+3. Handling JWT Token
+If your endpoints require authentication using JWT tokens, you'll need to:
+
+Extract the JWT token from the response of the login endpoint.
+Set the JWT token in the Authorization header of subsequent requests in Postman.
+To set the JWT token in Postman:
+
+Copy the token value from the login response.
+In subsequent requests, go to the Headers tab.
+Add a new header with Authorization as the key and Bearer your_token_value as the value.
