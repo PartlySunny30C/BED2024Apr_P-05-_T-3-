@@ -1,0 +1,38 @@
+body {
+    font-family: Arial, sans-serif;
+}
+
+h1 {
+    text-align: center;
+}
+
+section {
+    margin: 20px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    width: 200px;
+    margin: auto;
+}
+
+input {
+    margin: 5px 0;
+    padding: 10px;
+}
+
+button {
+    padding: 10px;
+    margin: 10px 0;
+}
+
+#books-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+#books-list li {
+    padding: 5px;
+    border-bottom: 1px solid #ccc;
+}
