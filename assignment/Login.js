@@ -1,8 +1,10 @@
+const apiUrl = 'http://localhost:3000';
+const cors = require('cors'); // Add this line
 const express = require('express');
 const sql = require('mssql');
 const bcrypt = require('bcrypt');
-
 const app = express();
+app.use(cors()); // Add this line
 app.use(express.json());
 
 
@@ -122,3 +124,85 @@ app.post('/users/change-password', async (req, res) => {
 app.listen(3000, () => {
   console.log('Server is running on http://localhost:3000');
 });
+
+// Function to show messages
+function showMessage(message, isSuccess) {
+  const messageDiv = document.getElementById('message');
+  messageDiv.innerText = message;
+  messageDiv.className = isSuccess ? 'message success' : 'message error';
+}
+
+// Function to register a user
+async function registerUser() {
+  const name = document.getElementById('registerName').value;
+  const password = document.getElementById('registerPassword').value;
+
+  try {
+      const response = await fetch(`${apiUrl}/users`, {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ name, password }),
+      });
+
+      const message = await response.text();
+      if (response.ok) {
+          showMessage(`Success: ${message}`, true);
+      } else {
+          showMessage(`Error: ${message}`, false);
+      }
+  } catch (error) {
+      showMessage(`Error: ${error.message}`, false);
+  }
+}
+
+// Function to log in a user
+async function loginUser() {
+  const name = document.getElementById('loginName').value;
+  const password = document.getElementById('loginPassword').value;
+
+  try {
+      const response = await fetch(`${apiUrl}/users/login`, {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ name, password }),
+      });
+
+      const message = await response.text();
+      if (response.ok) {
+          showMessage(`Success: ${message}`, true);
+      } else {
+          showMessage(`Error: ${message}`, false);
+      }
+  } catch (error) {
+      showMessage(`Error: ${error.message}`, false);
+  }
+}
+
+// Function to change a user's password
+async function changePassword() {
+  const name = document.getElementById('changePasswordName').value;
+  const newPassword = document.getElementById('newPassword').value;
+
+  try {
+      const response = await fetch(`${apiUrl}/users/change-password`, {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ name, newPassword }),
+      });
+
+      const message = await response.text();
+      if (response.ok) {
+          showMessage(`Connection Success: ${message}`, true);
+      } else {
+          showMessage(`Connection Error: ${message}`, false);
+      }
+  } catch (error) {
+      showMessage(`Error: ${error.message}`, false);
+  }
+}
