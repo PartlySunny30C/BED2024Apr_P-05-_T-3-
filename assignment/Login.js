@@ -1,12 +1,11 @@
 const apiUrl = 'http://localhost:3000';
-const cors = require('cors'); // Add this line
+const cors = require('cors'); 
 const express = require('express');
 const sql = require('mssql');
 const bcrypt = require('bcrypt');
 const app = express();
-app.use(cors()); // Add this line
+app.use(cors()); 
 app.use(express.json());
-
 
 const config = {
   user: 'Perseus',
@@ -19,14 +18,12 @@ const config = {
   },
 };
 
-
 const poolPromise = sql.connect(config)
   .then(pool => {
     console.log('Connected to SQL Server');
     return pool;
   })
   .catch(err => console.log('Database Connection Failed! Bad Config: ', err));
-
 
 app.get('/users', async (req, res) => {
   try {
@@ -38,39 +35,29 @@ app.get('/users', async (req, res) => {
   }
 });
 
-
 app.post('/users', async (req, res) => {
+  try {
+    const hashedPassword = await bcrypt.hash(req.body.password, 10);
+    const pool = await sql.connect(config);
+    const transaction = new sql.Transaction(pool);
+    await transaction.begin();
+
     try {
-      const hashedPassword = await bcrypt.hash(req.body.password, 10);
-      const pool = await sql.connect(config);
-  
-
-      const transaction = new sql.Transaction(pool);
-      await transaction.begin();
-  
-      try {
-
-        await pool.request()
-          .input('name', sql.VarChar, req.body.name)
-          .input('password', sql.VarChar, hashedPassword)
-          .query('INSERT INTO Users (name, password) VALUES (@name, @password)');
-  
-
-        await transaction.commit();
-  
-        res.status(201).send('User created');
-      } catch (error) {
-
-        await transaction.rollback();
-        throw error;
-      }
+      await pool.request()
+        .input('name', sql.VarChar, req.body.name)
+        .input('password', sql.VarChar, hashedPassword)
+        .query('INSERT INTO Users (name, password) VALUES (@name, @password)');
+      await transaction.commit();
+      res.status(201).send('User created');
     } catch (error) {
-      console.error('Error creating user:', error); 
-      res.status(500).send('Error creating user'); 
+      await transaction.rollback();
+      throw error;
     }
-  });
-  
-
+  } catch (error) {
+    console.error('Error creating user:', error); 
+    res.status(500).send('Error creating user'); 
+  }
+});
 
 app.post('/users/login', async (req, res) => {
   try {
@@ -120,6 +107,32 @@ app.post('/users/change-password', async (req, res) => {
   }
 });
 
+// New endpoint to insert financial records
+app.post('/financial-records', async (req, res) => {
+  try {
+    const { recordDate, month, year, amount } = req.body;
+    const pool = await poolPromise;
+    const transaction = new sql.Transaction(pool);
+    await transaction.begin();
+
+    try {
+      await pool.request()
+        .input('recordDate', sql.Date, recordDate)
+        .input('month', sql.Int, month)
+        .input('year', sql.Int, year)
+        .input('amount', sql.Decimal(10, 2), amount)
+        .query('INSERT INTO FinancialRecords (RecordDate, Month, Year, Amount) VALUES (@recordDate, @month, @year, @amount)');
+      await transaction.commit();
+      res.status(201).send('Financial record inserted');
+    } catch (error) {
+      await transaction.rollback();
+      throw error;
+    }
+  } catch (error) {
+    console.error('Error inserting financial record:', error); 
+    res.status(500).send('Error inserting financial record'); 
+  }
+});
 
 app.listen(3000, () => {
   console.log('Server is running on http://localhost:3000');
