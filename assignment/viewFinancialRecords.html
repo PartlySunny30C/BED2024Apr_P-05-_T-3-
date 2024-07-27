@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Financial Records</title>
+    <link rel="stylesheet" href="Valueinsertstyle.css">
+</head>
+<body>
+    <h1>View Financial Records</h1>
+    <table id="financialRecordsTable">
+        <thead>
+            <tr>
+                <th>Record ID</th>
+                <th>Date</th>
+                <th>Amount</th>
+                <th>Branch</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Records will be dynamically inserted here -->
+        </tbody>
+    </table>
+    <div id="message"></div>
+    <script>
+        const apiUrl = 'http://localhost:3000';
+
+        // Function to show messages
+        function showMessage(message, isSuccess) {
+            const messageDiv = document.getElementById('message');
+            messageDiv.innerText = message;
+            messageDiv.className = isSuccess ? 'message success' : 'message error';
+            messageDiv.style.display = 'block';
+        }
+
+        // Fetch financial records and display them
+        function fetchFinancialRecords() {
+            fetch(`${apiUrl}/financial-records`)
+                .then(response => response.json())
+                .then(records => {
+                    const tbody = document.getElementById('financialRecordsTable').getElementsByTagName('tbody')[0];
+                    tbody.innerHTML = '';
+                    records.forEach(record => {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>${record.RecordID}</td>
+                            <td>${new Date(record.RecordDate).toLocaleDateString()}</td>
+                            <td>${record.Amount.toFixed(2)}</td>
+                            <td>${record.Branch}</td>
+                        `;
+                        tbody.appendChild(row);
+                    });
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    showMessage(`Error: ${error.message}`, false);
+                });
+        }
+
+        // Fetch records when the page loads
+        window.onload = fetchFinancialRecords;
+    </script>
+</body>
+</html>

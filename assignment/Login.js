@@ -110,7 +110,7 @@ app.post('/users/change-password', async (req, res) => {
 // New endpoint to insert financial records
 app.post('/financial-records', async (req, res) => {
   try {
-    const { recordDate, month, year, amount } = req.body;
+    const { recordDate, amount, branch } = req.body;
     const pool = await poolPromise;
     const transaction = new sql.Transaction(pool);
     await transaction.begin();
@@ -118,10 +118,9 @@ app.post('/financial-records', async (req, res) => {
     try {
       await pool.request()
         .input('recordDate', sql.Date, recordDate)
-        .input('month', sql.Int, month)
-        .input('year', sql.Int, year)
         .input('amount', sql.Decimal(10, 2), amount)
-        .query('INSERT INTO FinancialRecords (RecordDate, Month, Year, Amount) VALUES (@recordDate, @month, @year, @amount)');
+        .input('branch', sql.VarChar, branch)
+        .query('INSERT INTO FinancialRecords (RecordDate, Amount, Branch) VALUES (@recordDate, @amount, @branch)');
       await transaction.commit();
       res.status(201).send('Financial record inserted');
     } catch (error) {
@@ -134,88 +133,28 @@ app.post('/financial-records', async (req, res) => {
   }
 });
 
+app.get('/financial-records', async (req, res) => {
+  try {
+    const pool = await poolPromise;
+    const result = await pool.request().query('SELECT * FROM FinancialRecords');
+    res.json(result.recordset);
+  } catch (error) {
+    console.error('Error fetching financial records:', error); 
+    res.status(500).send('Error fetching financial records');
+  }
+});
+
+app.delete('/financial-records', async (req, res) => {
+  try {
+    const pool = await poolPromise;
+    await pool.request().query('DROP TABLE FinancialRecords');
+    res.status(200).send('FinancialRecords table dropped');
+  } catch (error) {
+    console.error('Error dropping table:', error); 
+    res.status(500).send('Error dropping table'); 
+  }
+});
+
 app.listen(3000, () => {
   console.log('Server is running on http://localhost:3000');
 });
-
-// Function to show messages
-function showMessage(message, isSuccess) {
-  const messageDiv = document.getElementById('message');
-  messageDiv.innerText = message;
-  messageDiv.className = isSuccess ? 'message success' : 'message error';
-}
-
-// Function to register a user
-async function registerUser() {
-  const name = document.getElementById('registerName').value;
-  const password = document.getElementById('registerPassword').value;
-
-  try {
-      const response = await fetch(`${apiUrl}/users`, {
-          method: 'POST',
-          headers: {
-              'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ name, password }),
-      });
-
-      const message = await response.text();
-      if (response.ok) {
-          showMessage(`Success: ${message}`, true);
-      } else {
-          showMessage(`Error: ${message}`, false);
-      }
-  } catch (error) {
-      showMessage(`Error: ${error.message}`, false);
-  }
-}
-
-// Function to log in a user
-async function loginUser() {
-  const name = document.getElementById('loginName').value;
-  const password = document.getElementById('loginPassword').value;
-
-  try {
-      const response = await fetch(`${apiUrl}/users/login`, {
-          method: 'POST',
-          headers: {
-              'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ name, password }),
-      });
-
-      const message = await response.text();
-      if (response.ok) {
-          showMessage(`Success: ${message}`, true);
-      } else {
-          showMessage(`Error: ${message}`, false);
-      }
-  } catch (error) {
-      showMessage(`Error: ${error.message}`, false);
-  }
-}
-
-// Function to change a user's password
-async function changePassword() {
-  const name = document.getElementById('changePasswordName').value;
-  const newPassword = document.getElementById('newPassword').value;
-
-  try {
-      const response = await fetch(`${apiUrl}/users/change-password`, {
-          method: 'POST',
-          headers: {
-              'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ name, newPassword }),
-      });
-
-      const message = await response.text();
-      if (response.ok) {
-          showMessage(`Connection Success: ${message}`, true);
-      } else {
-          showMessage(`Connection Error: ${message}`, false);
-      }
-  } catch (error) {
-      showMessage(`Error: ${error.message}`, false);
-  }
-}

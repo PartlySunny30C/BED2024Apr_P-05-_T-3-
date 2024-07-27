@@ -4,6 +4,11 @@ CREATE TABLE Users (
     name VARCHAR(50) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL
 );
+CREATE TABLE FinancialRecords (
+    RecordID INT PRIMARY KEY IDENTITY(1,1),
+    RecordDate DATE,
+    Amount DECIMAL(10, 2)
+);
 
 database info:
   user: 'Perseus',
