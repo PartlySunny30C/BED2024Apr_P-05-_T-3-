@@ -7,8 +7,10 @@ CREATE TABLE Users (
 CREATE TABLE FinancialRecords (
     RecordID INT PRIMARY KEY IDENTITY(1,1),
     RecordDate DATE,
-    Amount DECIMAL(10, 2)
+    Amount DECIMAL(10, 2),
+    Branch VARCHAR(100)
 );
+
 
 database info:
   user: 'Perseus',
