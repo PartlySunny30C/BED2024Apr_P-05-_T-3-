@@ -1,0 +1,12 @@
+Sql command used:
+CREATE TABLE Users (
+    id INT IDENTITY(1,1) PRIMARY KEY,
+    name VARCHAR(50) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL
+);
+
+database info:
+  user: 'Perseus',
+  password: '42656c6c',
+  server: 'localhost',
+  database: 'BedAssignment'

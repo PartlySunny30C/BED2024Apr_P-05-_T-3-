@@ -1,0 +1,20 @@
+{
+  "name": "bed2024apr_p05_t3",
+  "version": "1.0.0",
+  "description": "BED Assignment",
+  "main": "index.js",
+  "scripts": {
+    "Devstart": "nodemon server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "express": "^4.19.2",
+    "mssql": "^11.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.4"
+  }
+}
