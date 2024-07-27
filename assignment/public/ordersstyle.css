@@ -1,0 +1,169 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+h1 {
+    text-align: center;
+}
+
+.btn {
+    display: block;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+    color: #fff;
+    text-align: center;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.btn:hover {
+    transform: scale(1.05);
+}
+
+.logoutBtn {
+    background-color: #ff4d4d;
+}
+
+.getOrderBtn {
+    background-color: #4CAF50;
+}
+
+.updateStatusBtn {
+    background-color: #2196F3;
+}
+
+.deleteOrderBtn {
+    background-color: #ff4d4d;
+}
+
+#logoutBtn {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px 0;
+}
+
+form input[type="text"] {
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    margin-right: 10px;
+    width: 200px;
+    box-sizing: border-box; 
+}
+
+form button {
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+#getOrderForm, #updateStatusForm {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#errorContainer {
+    display: none;
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+    padding: 10px;
+    position: relative; 
+    top: 0; 
+    left: 0; 
+    right: 0; 
+    margin: 20px 0; 
+    width: 100vw;
+    text-align: center;
+    box-sizing: border-box;
+    z-index: 100;
+}
+
+#orderDetails {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 20px;
+    margin-top: 20px;
+    width: 300px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    background: #fff;
+    display: none;
+}
+
+#ordersContainer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.order {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 20px;
+    margin: 10px;
+    width: 300px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    background: #fff;
+}
+
+.order h2 {
+    margin-top: 0;
+}
+
+.order ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.order ul li {
+    background: #f9f9f9;
+    margin: 5px 0;
+    padding: 5px;
+    border-radius: 4px;
+}
+
+.updateStatusForm {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.updateStatusForm input[type="text"] {
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    margin-right: 10px;
+    flex-grow: 1;
+}
+
+.orderDetails {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.orderDetails .btn {
+    margin-top: 10px;
+}
+
+.deleteOrderBtn {
+    display: block;
+    margin: 20px auto;
+}

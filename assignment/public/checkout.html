@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout</title>
+    <link rel="stylesheet" href="checkoutstyle.css">
+</head>
+<body>
+    <header>
+        <h1>Checkout</h1>
+    </header>
+    <main id="cart-list">
+        <!-- Cart items will be displayed here -->
+    </main>
+    <!-- Checkout form -->
+    <div class="checkout-form">
+        <h2>Complete Your Order</h2>
+        <form id="order-form">
+            <label for="manager">Manager Name:</label>
+            <input type="text" id="manager" name="manager" required>
+
+            <label for="branch-number">Branch Number:</label>
+            <input type="number" id="branch-number" name="branch-number" required>
+
+            <button type="submit">Submit Order</button>
+        </form>
+    </div>
+    <script src="checkout.js"></script>
+</body>
+</html>
