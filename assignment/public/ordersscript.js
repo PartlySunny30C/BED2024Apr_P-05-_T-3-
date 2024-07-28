@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.getElementById('logoutBtn').addEventListener('click', () => {
         console.log('Logout button clicked');
-        fetch('/logout', {
+        fetch('http://localhost:3000/logout', {
             method: 'GET',
             credentials: 'include'
         })
@@ -18,6 +18,8 @@ document.addEventListener('DOMContentLoaded', () => {
             console.error('Error:', error);
         });
     });
+    
+    
 
     document.getElementById('getOrderForm').addEventListener('submit', function(event) {
         event.preventDefault();

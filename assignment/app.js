@@ -13,6 +13,7 @@ const app = express();
 const port = process.env.PORT || 3000;
 const router = express.Router();
 const staticMiddleware = express.static("public");
+const session = require('express-session');
 
 // Middleware
 app.use(cors());
@@ -44,6 +45,13 @@ app.use(router);
 
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
+
+  app.use(session({
+    secret: 'your_secret_key', 
+    resave: false,
+    saveUninitialized: true,
+    cookie: { secure: false } 
+}));
 });
 
 // SQL Server Configuration
@@ -193,12 +201,17 @@ app.delete('/financial-records', async (req, res) => {
 
 // Logout Route
 app.get('/logout', (req, res) => {
-  req.session.destroy((err) => {
-    if (err) {
-      return res.status(500).send('Failed to logout');
-    }
-    res.redirect('/login');
-  });
+  if (req.session) {
+      req.session.destroy(err => {
+          if (err) {
+              console.error('Failed to destroy session:', err);
+              return res.status(500).send('Failed to logout');
+          }
+          res.redirect('index.html'); // Adjust the redirect URL as needed
+      });
+  } else {
+      res.redirect('index.html'); // Redirect to login if session does not exist
+  }
 });
 
 // Server Setup
