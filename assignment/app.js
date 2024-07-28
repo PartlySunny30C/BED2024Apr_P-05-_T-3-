@@ -1,13 +1,18 @@
 const express = require("express");
+const orderController = require("./controllers/orderController");
+const employeeController = require('./controllers/employeeController.js'); 
+const validateOrder = require("./middlewares/validateOrder");
+const orderRoutes = require("./routes/orderRoutes");
 const sql = require("mssql");
 const bodyParser = require("body-parser");
 const bcrypt = require("bcrypt");
 const cors = require("cors");
 const path = require("path");
 const dbConfig = require("./dbconfig");
-
 const app = express();
 const port = process.env.PORT || 3000;
+const router = express.Router();
+const staticMiddleware = express.static("public");
 
 // Middleware
 app.use(cors());
@@ -15,8 +20,31 @@ app.use(express.json());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// Serve static files from the "public" directory
+
+app.use(express.static('public'));
+
+app.use(staticMiddleware);
+
+app.use("/api", orderRoutes);
+
+app.get("/orders", orderController.getAllOrders);
+app.get("/orders/:id", orderController.getOrderById);
+app.put("/orders/:id", validateOrder, orderController.updateOrderStatus);
+app.delete("/orders/:id", orderController.deleteOrder);
+app.post("/createorders" , orderController.createOrder);
+
+
+app.get('/employees', employeeController.getAllEmployees); 
+app.get('/employees/:id', employeeController.getEmployeesById); 
+app.get('/employees/:name', employeeController.getEmployeesByName); 
+app.put('/employees/:id', employeeController.updateemployee);
+
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(router);
+
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
 
 // SQL Server Configuration
 const poolPromise = sql.connect(dbConfig)

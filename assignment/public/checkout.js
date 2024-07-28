@@ -22,6 +22,11 @@ document.addEventListener('DOMContentLoaded', function() {
         const managerName = document.getElementById('manager').value;
         const branchNumber = document.getElementById('branch-number').value;
 
+        if (!managerName || !branchNumber) {
+            alert('Please fill in all fields.');
+            return;
+        }
+
         // Prepare data to send to the server
         const orderData = {
             manager: managerName,
@@ -37,16 +42,22 @@ document.addEventListener('DOMContentLoaded', function() {
             },
             body: JSON.stringify(orderData)
         })
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
         .then(data => {
             alert('Order submitted successfully!');
             sessionStorage.removeItem('cart');
             form.reset(); // Clear form fields upon successful submission
             cartList.innerHTML = '<p>Your cart is empty.</p>'; 
-            window.location.href = '/backtohome.html';
+            window.location.href = 'homepage.html';
         })
         .catch(error => {
             console.error('Error:', error);
+            alert('There was an error submitting your order.');
         });
     });
 });
