@@ -21,6 +21,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
         const managerName = document.getElementById('manager').value;
         const branchNumber = document.getElementById('branch-number').value;
+        if (branchNumber < 1 || branchNumber > 3) {
+            alert('Branch number must be between 1 and 3.');
+            return;
+        }
 
         if (!managerName || !branchNumber) {
             alert('Please fill in all fields.');
