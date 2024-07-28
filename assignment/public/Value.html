@@ -37,6 +37,8 @@
             const amount = document.getElementById('amount').value;
             const branch = document.getElementById('branch').value;
             
+            console.log('Submitting data:', { recordDate, amount, branch }); // Debug log
+            
             const data = {
                 recordDate: recordDate,
                 amount: amount,
@@ -59,10 +61,11 @@
                 return response.text();
             })
             .then(message => {
+                console.log('Success message:', message); // Debug log
                 showMessage(`Success: ${message}`, true);
             })
             .catch((error) => {
-                console.error('Error:', error);
+                console.error('Error:', error); // Debug log
                 showMessage(`Error: ${error.message}`, false);
             });
         });
