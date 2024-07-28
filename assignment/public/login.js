@@ -45,15 +45,19 @@ function loginUser() {
         body: JSON.stringify({ name, password })
     })
     .then(response => {
-        if (!response.ok) {
-            throw new Error('Login failed');
-        }
-        return response.text();
+        return response.text().then(text => {
+            if (!response.ok) {
+                throw new Error(text);
+            }
+            return text;
+        });
     })
     .then(message => {
         console.log('Response message:', message); // Debug log
         showMessage(`Success: ${message}`, true);
-        window.location.href = 'homepage.html'; // Change to your target page
+        if (message === 'Success') { 
+            window.location.href = 'homepage.html'; 
+        }
     })
     .catch(error => {
         console.error('Error:', error); // Debug log
