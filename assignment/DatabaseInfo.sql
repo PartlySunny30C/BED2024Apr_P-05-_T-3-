@@ -4,12 +4,14 @@ CREATE TABLE Users (
     name VARCHAR(50) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL
 );
+
 CREATE TABLE FinancialRecords (
     RecordID INT PRIMARY KEY IDENTITY(1,1),
     RecordDate DATE,
     Amount DECIMAL(10, 2),
     Branch VARCHAR(100)
-);  
+);
+
 CREATE TABLE orders (
     order_id INT IDENTITY PRIMARY KEY,
     manager NVARCHAR(100),
@@ -18,6 +20,29 @@ CREATE TABLE orders (
     items NVARCHAR(MAX)
 );
 
+INSERT INTO orders (manager, branch_number, status, items)
+VALUES
+('John Doe', 1, 'Pending', '[{ "name": "Japanese Corn", "quantity": 2 }, { "name": "Kimchi", "quantity": 1 }]'),
+('Jane Smith', 2, 'Delivering', '[{ "name": "Japanese Beef", "quantity": 5 }, { "name": "Ginger", "quantity": 3 }]'),
+('Alice Johnson', 3, 'Delivered', '[{ "name": "Japanese Corn", "quantity": 1 }, { "name": "Kimchi", "quantity": 2 }]'),
+('Bob Brown', 1, 'Pending', '[{ "name": "Japanese Beef", "quantity": 4 }, { "name": "Ginger", "quantity": 6 }]'),
+('Charlie Davis', 2, 'Delivering', '[{ "name": "Japanese Corn", "quantity": 3 }, { "name": "Kimchi", "quantity": 7 }]'),
+('Dave Wilson', 3, 'Delivered', '[{ "name": "Japanese Beef", "quantity": 2 }, { "name": "Ginger", "quantity": 4 }]'),
+('Eve Clark', 1, 'Pending', '[{ "name": "Japanese Corn", "quantity": 1 }, { "name": "Kimchi", "quantity": 2 }]'),
+('Frank Harris', 2, 'Delivering', '[{ "name": "Japanese Beef", "quantity": 5 }, { "name": "Ginger", "quantity": 8 }]'),
+('Grace Lee', 3, 'Delivered', '[{ "name": "Japanese Corn", "quantity": 3 }, { "name": "Kimchi", "quantity": 4 }]'),
+('Henry Turner', 1, 'Pending', '[{ "name": "Japanese Beef", "quantity": 2 }, { "name": "Ginger", "quantity": 5 }]'),
+('Isabella Scott', 2, 'Delivering', '[{ "name": "Japanese Corn", "quantity": 4 }, { "name": "Kimchi", "quantity": 1 }]'),
+('Jack White', 3, 'Delivered', '[{ "name": "Japanese Beef", "quantity": 3 }, { "name": "Ginger", "quantity": 6 }]'),
+('Karen Black', 1, 'Pending', '[{ "name": "Japanese Corn", "quantity": 2 }, { "name": "Kimchi", "quantity": 3 }]'),
+('Liam Green', 2, 'Delivering', '[{ "name": "Japanese Beef", "quantity": 1 }, { "name": "Ginger", "quantity": 7 }]'),
+('Megan Brown', 3, 'Delivered', '[{ "name": "Japanese Corn", "quantity": 5 }, { "name": "Kimchi", "quantity": 2 }]'),
+('Nathan Blue', 1, 'Pending', '[{ "name": "Japanese Beef", "quantity": 4 }, { "name": "Ginger", "quantity": 3 }]'),
+('Olivia Purple', 2, 'Delivering', '[{ "name": "Japanese Corn", "quantity": 2 }, { "name": "Kimchi", "quantity": 5 }]'),
+('Peter Yellow', 3, 'Delivered', '[{ "name": "Japanese Beef", "quantity": 1 }, { "name": "Ginger", "quantity": 8 }]'),
+('Quinn Orange', 1, 'Pending', '[{ "name": "Japanese Corn", "quantity": 3 }, { "name": "Kimchi", "quantity": 4 }]'),
+('Rachel Gray', 2, 'Delivering', '[{ "name": "Japanese Beef", "quantity": 2 }, { "name": "Ginger", "quantity": 5 }]');
+
 CREATE TABLE employees (
     id INT IDENTITY PRIMARY KEY,
     name NVARCHAR(100),
@@ -25,13 +50,6 @@ CREATE TABLE employees (
     role NVARCHAR(50),
     datejoin DATE
 );
-
-INSERT INTO orders (manager, status, branch_number, items)
-VALUES
-    ('Alice Johnson', 'Pending', 1, N'[{ "name": "Japanese Corn", "quantity": 2 }, { "name": "Japanese Beef", "quantity": 1 }]'),
-    ('Bob Smith', 'Delivered', 2, N'[{ "name": "Ginger", "quantity": 1 }]'),
-    ('Carol White', 'Delivering', 3, N'[{ "name": "Kimchi", "quantity": 5 }, { "name": "Taiwan Cauliflower", "quantity": 3 }]'),
-    ('Dave Brown', 'Pending', 1, N'[{ "name": "Pasar Broccoli", "quantity": 2 }, { "name": "Jasmine Rice", "quantity": 4 }]');
 
 INSERT INTO employees (name, contactNumber, role, datejoin)
 VALUES 
@@ -55,7 +73,6 @@ VALUES
 ('Aiden Phillips', '9456 7890', 'Restaurant Coordinator', '2014-05-25'),
 ('Evelyn Gray', '9032 6781', 'Bar Manager', '2013-02-18'),
 ('Elijah Rivera', '8945 6789', 'Head Waiter/Waitress', '2012-07-20');
-
 
 /*Database info:
   user: 'Perseus',
