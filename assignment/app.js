@@ -1,5 +1,6 @@
 const express = require("express");
 const path = require("path");
+const db = require('./db');
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const sql = require("mssql");
@@ -8,9 +9,21 @@ const dbConfig = require("./dbconfig");
 const orderRoutes = require("./routes/orderRoutes");
 const orderController = require("./controllers/orderController");
 const employeeController = require("./controllers/employeeController");
+const mysql = require('mysql');
 
 const app = express();
 const port = process.env.PORT || 3000;
+
+const config = {
+    user: 'Perseus',
+    password: '42656c6c',
+    server: 'localhost', 
+    database: 'BedAssignment', 
+    options: {
+        encrypt: true, 
+        trustServerCertificate: true 
+    }
+};
 
 // Middleware
 app.use(cors());
@@ -140,11 +153,12 @@ app.post('/financial-records', async (req, res) => {
 
 app.get('/financial-records', async (req, res) => {
     try {
-        const pool = await poolPromise;
-        const result = await pool.request().query('SELECT * FROM FinancialRecords');
+        const result = await sql.query('SELECT * FROM FinancialRecords');
+        console.log('Query result:', result); // Debug log
         res.json(result.recordset);
-    } catch (error) {
-        res.status(500).json({ message: 'Error fetching financial records' });
+    } catch (err) {
+        console.error('Error querying database:', err);
+        res.status(500).send('Server Error');
     }
 });
 
@@ -197,4 +211,14 @@ process.on("SIGINT", async () => {
     await sql.close();
     console.log("Database connection closed");
     process.exit(0);
+});
+app.get('/test-connection', async (req, res) => {
+    try {
+        await sql.connect(config);
+        const result = await sql.query('SELECT 1 AS test');
+        res.json(result.recordset);
+    } catch (err) {
+        console.error('Test connection failed:', err);
+        res.status(500).send('Connection Test Failed');
+    }
 });

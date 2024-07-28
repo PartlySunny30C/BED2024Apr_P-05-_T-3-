@@ -36,8 +36,18 @@
         // Fetch financial records and display them
         function fetchFinancialRecords() {
             fetch(`${apiUrl}/financial-records`)
-                .then(response => response.json())
-                .then(records => {
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log('Fetched records:', data); // Debug log
+                    if (!Array.isArray(data)) {
+                        throw new Error('Invalid response format');
+                    }
+                    const records = data; // Access the recordset array
                     const tbody = document.getElementById('financialRecordsTable').getElementsByTagName('tbody')[0];
                     tbody.innerHTML = '';
                     records.forEach(record => {
