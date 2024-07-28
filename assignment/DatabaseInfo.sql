@@ -1,4 +1,4 @@
-Sql command used:
+--Sql command used:
 CREATE TABLE Users (
     id INT IDENTITY(1,1) PRIMARY KEY,
     name VARCHAR(50) NOT NULL UNIQUE,
@@ -18,13 +18,6 @@ CREATE TABLE orders (
     items NVARCHAR(MAX)
 );
 
-INSERT INTO orders (manager, status, branch_number, items)
-VALUES
-    ('Alice Johnson', 'Pending', 1, N'[{ "name": "Product 1", "quantity": 2 }, { "name": "Product 2", "quantity": 1 }]'),
-    ('Bob Smith', 'Shipped', 2, N'[{ "name": "Product 3", "quantity": 1 }]'),
-    ('Carol White', 'Completed', 3, N'[{ "name": "Product 1", "quantity": 5 }, { "name": "Product 4", "quantity": 3 }]'),
-    ('Dave Brown', 'Cancelled', 1, N'[{ "name": "Product 2", "quantity": 2 }, { "name": "Product 5", "quantity": 4 }]');
-
 CREATE TABLE employees (
     id INT IDENTITY PRIMARY KEY,
     name NVARCHAR(100),
@@ -32,6 +25,13 @@ CREATE TABLE employees (
     role NVARCHAR(50),
     datejoin DATE
 );
+
+INSERT INTO orders (manager, status, branch_number, items)
+VALUES
+    ('Alice Johnson', 'Pending', 1, N'[{ "name": "Japanese Corn", "quantity": 2 }, { "name": "Japanese Beef", "quantity": 1 }]'),
+    ('Bob Smith', 'Delivered', 2, N'[{ "name": "Ginger", "quantity": 1 }]'),
+    ('Carol White', 'Delivering', 3, N'[{ "name": "Kimchi", "quantity": 5 }, { "name": "Taiwan Cauliflower", "quantity": 3 }]'),
+    ('Dave Brown', 'Pending', 1, N'[{ "name": "Pasar Broccoli", "quantity": 2 }, { "name": "Jasmine Rice", "quantity": 4 }]');
 
 INSERT INTO employees (name, contactNumber, role, datejoin)
 VALUES 
@@ -57,8 +57,8 @@ VALUES
 ('Elijah Rivera', '8945 6789', 'Head Waiter/Waitress', '2012-07-20');
 
 
-database info:
+/*Database info:
   user: 'Perseus',
   password: '42656c6c',
   server: 'localhost',
-  database: 'BedAssignment'
+  database: 'BedAssignment'*/
